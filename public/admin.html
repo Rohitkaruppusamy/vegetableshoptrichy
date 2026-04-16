@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin – PA KA Vegetables</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- No links to this page anywhere on the public site -->
+</head>
+<body>
+
+<!-- ══ LOGIN GATE ══ -->
+<!-- Shown until correct password is entered -->
+<div id="login-gate" class="admin-gate">
+  <div class="login-card">
+    <div class="logo-circle">PK</div>
+    <h2>Admin Panel</h2>
+    <p>PA KA Vegetables – Gandhi Market, Trichy</p>
+
+    <div id="login-msg" class="msg-box msg-error"></div>
+
+    <div class="form-group" style="margin-bottom:14px;">
+      <label class="form-label">Password</label>
+      <input type="password" id="login-pwd" class="form-input" placeholder="Enter admin password"
+             onkeydown="if(event.key==='Enter') doLogin()">
+    </div>
+    <button class="btn btn-green" style="width:100%;justify-content:center;" onclick="doLogin()">
+      🔐 Login
+    </button>
+  </div>
+</div>
+
+<!-- ══ ADMIN PANEL (shown after login) ══ -->
+<div id="admin-app" style="display:none;">
+  <div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <div class="admin-logo">
+        PA KA Admin
+        <span>Vegetable Management</span>
+      </div>
+      <button class="sidebar-item active" onclick="showSection('dashboard')">
+        📊 Dashboard
+      </button>
+      <button class="sidebar-item" onclick="showSection('vegetables')">
+        🌿 Vegetables
+      </button>
+      <button class="sidebar-item" onclick="showSection('add')">
+        ➕ Add Vegetable
+      </button>
+      <div style="flex:1;"></div>
+      <button class="sidebar-item" onclick="doLogout()" style="margin-top:auto;color:rgba(255,100,100,0.75);">
+        🚪 Logout
+      </button>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+
+      <!-- TOAST -->
+      <div id="admin-toast" class="toast"></div>
+
+      <!-- ── DASHBOARD ── -->
+      <div id="section-dashboard" class="admin-section active">
+        <div class="admin-top">
+          <h2>Dashboard</h2>
+          <p>Overview of your vegetable inventory</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:32px;">
+          <div class="order-card" style="text-align:center;padding:24px 16px;">
+            <div style="font-size:36px;margin-bottom:8px;">🌿</div>
+            <div style="font-size:28px;font-family:'Playfair Display',serif;font-weight:900;color:var(--g-main);" id="stat-total">–</div>
+            <div style="font-size:13px;color:var(--text-muted);">Total Vegetables</div>
+          </div>
+          <div class="order-card" style="text-align:center;padding:24px 16px;">
+            <div style="font-size:36px;margin-bottom:8px;">✅</div>
+            <div style="font-size:28px;font-family:'Playfair Display',serif;font-weight:900;color:var(--g-main);" id="stat-available">–</div>
+            <div style="font-size:13px;color:var(--text-muted);">In Stock</div>
+          </div>
+          <div class="order-card" style="text-align:center;padding:24px 16px;">
+            <div style="font-size:36px;margin-bottom:8px;">❌</div>
+            <div style="font-size:28px;font-family:'Playfair Display',serif;font-weight:900;color:var(--red);" id="stat-out">–</div>
+            <div style="font-size:13px;color:var(--text-muted);">Out of Stock</div>
+          </div>
+          <div class="order-card" style="text-align:center;padding:24px 16px;">
+            <div style="font-size:36px;margin-bottom:8px;">💰</div>
+            <div style="font-size:28px;font-family:'Playfair Display',serif;font-weight:900;color:var(--gold);" id="stat-avg">–</div>
+            <div style="font-size:13px;color:var(--text-muted);">Avg Price / kg</div>
+          </div>
+        </div>
+        <div class="admin-top">
+          <h2 style="font-size:18px;">Recent Prices</h2>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="dash-table">
+            <thead>
+              <tr>
+                <th>Vegetable</th>
+                <th>Price/kg</th>
+                <th>Stock</th>
+                <th>Last Updated</th>
+              </tr>
+            </thead>
+            <tbody id="dash-tbody">
+              <tr><td colspan="4" style="text-align:center;padding:24px;color:var(--text-muted);">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── MANAGE VEGETABLES ── -->
+      <div id="section-vegetables" class="admin-section">
+        <div class="admin-top">
+          <h2>Manage Vegetables</h2>
+          <p>Edit prices, stock status, or delete items.</p>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Tamil Name</th>
+                <th>Price/kg (₹)</th>
+                <th>Stock</th>
+                <th>Updated</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="veg-manage-tbody">
+              <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-muted);">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── ADD VEGETABLE ── -->
+      <div id="section-add" class="admin-section">
+        <div class="admin-top">
+          <h2 id="add-form-title">Add New Vegetable</h2>
+          <p id="add-form-desc">Fill in the details to add a vegetable to the price list.</p>
+        </div>
+        <div id="add-msg" class="msg-box"></div>
+        <form class="admin-form" onsubmit="submitVegetable(event)">
+          <input type="hidden" id="edit-id" value="">
+
+          <div class="form-group">
+            <label class="form-label">Vegetable Name (English) *</label>
+            <input type="text" id="f-name" class="form-input" placeholder="e.g. Tomato" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Tamil Name (optional)</label>
+            <input type="text" id="f-name-ta" class="form-input" placeholder="e.g. தக்காளி">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Price per kg (₹) *</label>
+            <input type="number" id="f-price" class="form-input" placeholder="e.g. 40" min="1" step="0.5" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Stock Status *</label>
+            <select id="f-stock" class="form-select">
+              <option value="Available">✅ Available</option>
+              <option value="Out of Stock">❌ Out of Stock</option>
+              <option value="Limited Stock">⚠️ Limited Stock</option>
+            </select>
+          </div>
+
+          <div class="form-group full form-submit" style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button type="submit" class="btn btn-green">
+              <span id="submit-btn-text">➕ Add Vegetable</span>
+            </button>
+            <button type="button" class="btn btn-outline-green" onclick="resetForm()">
+              ✕ Cancel / Reset
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- EDIT MODAL OVERLAY -->
+<div id="edit-modal" style="
+  display:none;position:fixed;inset:0;z-index:9999;
+  background:rgba(0,0,0,0.5);
+  display:none;align-items:center;justify-content:center;
+">
+  <div style="background:var(--white);border-radius:var(--radius);padding:32px;width:100%;max-width:480px;margin:20px;">
+    <h3 style="margin-bottom:20px;color:var(--g-dark);">✏️ Edit Vegetable</h3>
+    <div id="modal-msg" class="msg-box"></div>
+    <div class="admin-form" style="grid-template-columns:1fr 1fr;">
+      <input type="hidden" id="modal-id">
+      <div class="form-group">
+        <label class="form-label">Name (English) *</label>
+        <input type="text" id="modal-name" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tamil Name</label>
+        <input type="text" id="modal-name-ta" class="form-input">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Price/kg (₹) *</label>
+        <input type="number" id="modal-price" class="form-input" min="1" step="0.5" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Stock Status</label>
+        <select id="modal-stock" class="form-select">
+          <option value="Available">✅ Available</option>
+          <option value="Out of Stock">❌ Out of Stock</option>
+          <option value="Limited Stock">⚠️ Limited Stock</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;">
+      <button class="btn btn-green" onclick="saveEdit()">💾 Save Changes</button>
+      <button class="btn btn-outline-green" onclick="closeModal()">✕ Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>

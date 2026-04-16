@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PA KA Vegetables | பா கா காய்கறிகள் – Trichy Gandhi Market</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+Tamil:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo-sm">PK</div>
+    <div class="nav-name">
+      PA KA Vegetables
+      <span>பா கா காய்கறிகள்</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#vegetables">Shop</a></li>
+    <li><a href="#delivery">Delivery</a></li>
+    <li><a href="https://wa.me/919789460493" target="_blank">Contact</a></li>
+  </ul>
+  <a href="https://wa.me/919789460493" target="_blank" class="nav-cta">💬 WhatsApp Order</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-decor"></div>
+  <div class="hero-decor2"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span class="live-dot"></span>
+      Live Prices – Updated Daily
+    </div>
+    <h1>
+      Fresh Vegetables<br>
+      <span class="accent">Straight from Gandhi Market</span>
+    </h1>
+    <p class="hero-sub">
+      Daily fresh vegetables at wholesale prices. Order directly via WhatsApp –
+      quick, simple, and delivered to your door.
+      <br><span class="ta" style="color:rgba(255,255,255,0.65);font-size:13px;">
+        தினமும் புத்திரி காய்கறிகள் – நேரடி வாட்ஸ்அப் ஆர்டர்
+      </span>
+    </p>
+    <div class="hero-pills">
+      <span class="pill">🚚 Free delivery up to 30km</span>
+      <span class="pill">⚖️ Min. 1 kg order</span>
+      <span class="pill">📍 Gandhi Market, Trichy</span>
+      <span class="pill">🕐 24/7 WhatsApp</span>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <a href="#vegetables" class="btn btn-gold">🛒 Browse Prices</a>
+      <a href="https://wa.me/919789460493" target="_blank" class="btn btn-wa">💬 Order Now on WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<!-- VEGETABLES SECTION -->
+<section class="section" id="vegetables">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Today's Vegetable Prices</h2>
+      <p class="section-sub">Prices updated daily from Gandhi Market. Select quantity and order via WhatsApp.</p>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <span id="last-refresh" style="font-size:12px;color:var(--text-muted);"></span>
+      <button class="btn btn-outline-green btn-sm" onclick="loadVegetables()">🔄 Refresh</button>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div id="veg-loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Fetching today's prices…</p>
+  </div>
+
+  <!-- Error state -->
+  <div id="veg-error" style="display:none;" class="empty-state">
+    <div class="empty-icon">⚠️</div>
+    <p style="color:var(--red);font-weight:600;">Could not load prices.</p>
+    <p style="font-size:14px;margin-top:8px;">Check your connection and try again.</p>
+    <button class="btn btn-green" style="margin-top:16px;" onclick="loadVegetables()">Try Again</button>
+  </div>
+
+  <!-- Vegetable cards grid -->
+  <div id="veg-grid" class="veg-grid" style="display:none;"></div>
+</section>
+
+<!-- DELIVERY ESTIMATE SECTION -->
+<section class="section" id="delivery" style="padding-top:0;">
+  <div class="delivery-box">
+    <span class="icon">🚚</span>
+    <div style="flex:1;">
+      <h3 style="color:var(--g-dark);font-size:17px;margin-bottom:6px;">Delivery Charge Estimate</h3>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">
+        Enter your distance from Gandhi Market, Trichy to estimate delivery cost.
+      </p>
+      <div class="delivery-input-row">
+        <input type="number" id="dist-input" class="delivery-input" placeholder="Distance in km" min="0" max="200">
+        <button class="btn btn-gold btn-sm" onclick="estimateDelivery()">Calculate</button>
+      </div>
+      <div id="delivery-result" class="delivery-result" style="display:none;margin-top:12px;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="fb-name">PA KA Vegetables</div>
+      <div class="fb-name-ta">பா கா காய்கறிகள்</div>
+      <p>Trichy's trusted fresh vegetable supplier. Serving individuals, colleges, hotels & companies from Gandhi Market.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#vegetables">Today's Prices</a></li>
+        <li><a href="#delivery">Delivery Info</a></li>
+        <li><a href="https://wa.me/919789460493" target="_blank">WhatsApp Order</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact Us</h4>
+      <ul>
+        <li><a href="tel:9789460493">📞 97894 60493</a></li>
+        <li><a href="https://wa.me/919789460493" target="_blank">💬 WhatsApp Us</a></li>
+        <li><a href="#">📍 Gandhi Market, Trichy</a></li>
+        <li><a href="#">🕐 Open 24/7</a></li>
+      </ul>
+    </div>
+  </div>
+  <hr class="footer-divider">
+  <div class="footer-bottom">
+    <span>© 2025 PA KA Vegetables, Gandhi Market, Trichy. All rights reserved.</span>
+    <span>Free delivery within 30 km | 24/7 service</span>
+  </div>
+</footer>
+
+<!-- FLOATING WHATSAPP BUTTON -->
+<a href="https://wa.me/919789460493" target="_blank" class="floating-wa" title="Order on WhatsApp">💬</a>
+
+<!-- TOAST NOTIFICATION -->
+<div id="toast" class="toast"></div>
+
+<script src="/js/main.js"></script>
+</body>
+</html>
